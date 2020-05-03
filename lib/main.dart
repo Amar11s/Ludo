@@ -46,6 +46,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((context) {
+      dimentions = _getPosition(2, 2);
+      index = index + 1;
+      setState(() {});
+    });
+  }
+
   int index = 0;
   GlobalKey keyBar = GlobalKey();
   List<double> dimentions = [0, 0, 0, 0];
@@ -60,6 +69,18 @@ class _MyHomePageState extends State<MyHomePage> {
       keysMain.add(keys);
     }
     return keysMain;
+  }
+
+  void _onPressed() {
+    for (int i = 0; i < Path.greenPath.length; i++) {
+      int duration = 100 + (i * 300);
+      var future = new Future.delayed(Duration(milliseconds: duration), () {
+        dimentions =
+            _getPosition(Path.greenPath[index][0], Path.greenPath[index][1]);
+        index = index + 1;
+        setState(() {});
+      });
+    }
   }
 
   List<double> _getPosition(int row, int column) {
@@ -103,14 +124,17 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           Board(keyRefrences),
           AnimatedPositioned(
-            duration: Duration(microseconds: 500),
+            duration: Duration(milliseconds: 100),
             left: dimentions[0],
             top: dimentions[1],
             width: dimentions[2],
             height: dimentions[3],
-            child: Container(
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.purpleAccent),
+            child: Card(
+              elevation: 5,
+              child: Container(
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle, color: Colors.purpleAccent),
+              ),
             ),
           ),
         ],
@@ -122,11 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-              dimentions = _getPosition(Path.greenPath[index][0], Path.greenPath[index][1]);
-              index = index +1;
-              setState(() {});
-        },
+        onPressed: _onPressed,
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

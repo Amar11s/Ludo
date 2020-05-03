@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../utility.dart';
 class LudoRow extends StatelessWidget {
-  int row;
-  List<GlobalKey> keyRow;
+  final int row;
+  final List<GlobalKey> keyRow;
   LudoRow(this.row,this.keyRow);
   List<Flexible> _getColumns() {
     List<Flexible> columns = [];
