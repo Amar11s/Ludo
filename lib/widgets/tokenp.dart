@@ -32,7 +32,7 @@ class Tokenp extends StatelessWidget {
       height: dimentions[3],
       child: GestureDetector(
            onTap: (){
-             gameState.moveToken(token, 3);
+             gameState.moveToken(token, 6);
            },
               child: Card(
           elevation: 5,

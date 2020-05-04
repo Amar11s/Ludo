@@ -60,22 +60,34 @@ class GameState  with ChangeNotifier{
       pathPosition = 0;
       _updateInitalPositions(token);
       _updateBoardState(token, destination, pathPosition);
+      this.gameTokens[token.id].tokenPosition = destination;
+      this.gameTokens[token.id].positionInPath = pathPosition;
+      notifyListeners();
     } else if (token.tokenState != TokenState.initial) {
       int step = token.positionInPath + steps;
       if (step > 56) return;
       destination = _getPosition(token.type, step);
       pathPosition = step;
       _updateBoardState(token, destination, pathPosition);
+     for (int i = 1; i <= steps;i++){
+       int duration = 100 + (i * 400);
+      var future = new Future.delayed(Duration(milliseconds: duration), () {
+      int stepLoc = token.positionInPath + 1;
+      this.gameTokens[token.id].tokenPosition = _getPosition(token.type, stepLoc);
+      this.gameTokens[token.id].positionInPath = stepLoc;
+      token.positionInPath = stepLoc; 
+      notifyListeners();
+      });
+     }
     }
-    notifyListeners();
   }
 
   _updateBoardState(Token token, Position destination, int pathPosition) {
     //when the destination is on any star
     if (this.starPositions.contains(destination)) {
       this.gameTokens[token.id].tokenState = TokenState.safe;
-      this.gameTokens[token.id].tokenPosition = destination;
-      this.gameTokens[token.id].positionInPath = pathPosition;
+      //this.gameTokens[token.id].tokenPosition = destination;
+      //this.gameTokens[token.id].positionInPath = pathPosition;
       return;
     }
     List<Token> tokenAtDestination = this.gameTokens.where((tkn) {
@@ -87,8 +99,8 @@ class GameState  with ChangeNotifier{
     //if no one at the destination
     if (tokenAtDestination.length == 0) {
       this.gameTokens[token.id].tokenState = TokenState.normal;
-      this.gameTokens[token.id].tokenPosition = destination;
-      this.gameTokens[token.id].positionInPath = pathPosition;
+      //this.gameTokens[token.id].tokenPosition = destination;
+      //this.gameTokens[token.id].positionInPath = pathPosition;
       return;
     }
     //check for same color at destination
@@ -103,8 +115,8 @@ class GameState  with ChangeNotifier{
         this.gameTokens[tkn.id].tokenState = TokenState.safeinpair;
       }
       this.gameTokens[token.id].tokenState = TokenState.safeinpair;
-      this.gameTokens[token.id].tokenPosition = destination;
-      this.gameTokens[token.id].positionInPath = pathPosition;
+      //this.gameTokens[token.id].tokenPosition = destination;
+      //this.gameTokens[token.id].positionInPath = pathPosition;
       return;
     }
     if (tokenAtDestinationSameType.length < tokenAtDestination.length) {
@@ -122,8 +134,8 @@ class GameState  with ChangeNotifier{
           tokenAtDestinationSameType.length > 0
               ? TokenState.safeinpair
               : TokenState.normal;
-      this.gameTokens[token.id].tokenPosition = destination;
-      this.gameTokens[token.id].positionInPath = pathPosition;
+     // this.gameTokens[token.id].tokenPosition = destination;
+     // this.gameTokens[token.id].positionInPath = pathPosition;
     }
   }
 
