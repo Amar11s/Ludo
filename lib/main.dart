@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import './gameengine/model/game_state.dart';
 import './widgets/gameplay.dart';
-
+import 'package:provider/provider.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -12,7 +13,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: ChangeNotifierProvider<GameState>(
+        create: (context)=>GameState(),
+        child: MyHomePage(title: 'Flutter Demo Home Page')),
     );
   }
 }
@@ -39,12 +42,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   @override
   Widget build(BuildContext context) {
+    final gameState = Provider.of<GameState>(context);
     return Scaffold(
       appBar: AppBar(
         key: keyBar,
         title: Text('Sample Code'),
       ),
-      body: GamePlay(keyBar),
+      body: GamePlay(keyBar,gameState),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(

@@ -5,7 +5,8 @@ import './tokenp.dart';
 import '../gameengine/model/game_state.dart';
 class GamePlay extends StatefulWidget {
   final GlobalKey keyBar;
-  GamePlay(this.keyBar);
+  final GameState gameState;
+  GamePlay(this.keyBar,this.gameState);
   @override
   _GamePlayState createState() => _GamePlayState();
 }
@@ -18,7 +19,6 @@ class _GamePlayState extends State<GamePlay> {
       });
     });
   }
-  final GameState gameState = GameState();
   bool boardBuild = false;
   List<double> dimentions = [0, 0, 0, 0];
   final List<List<GlobalKey>> keyRefrences =_getGlobalKeys();
@@ -39,6 +39,7 @@ class _GamePlayState extends State<GamePlay> {
     double y;
     double w;
     double h;
+    if(this.widget.keyBar.currentContext == null) return [0,0,0,0];
     final RenderBox renderBoxBar = this.widget.keyBar.currentContext.findRenderObject();
     final sizeBar = renderBoxBar.size;
     final cellBoxKey = keyRefrences[row][column];
@@ -55,9 +56,9 @@ class _GamePlayState extends State<GamePlay> {
     listFrame.add(h);
     return listFrame;
   }
-  List<Tokenp> _getTokenList(){
+    List<Tokenp> _getTokenList(){
     List<Tokenp> widgets = [];
-    for(Token token in this.gameState.gameTokens)
+    for(Token token in this.widget.gameState.gameTokens)
     {
       widgets.add(Tokenp(token,_getPosition(token.tokenPosition.row, token.tokenPosition.column)));
     }

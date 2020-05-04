@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../gameengine/model/game_state.dart';
 import '../gameengine/model/token.dart';
+import 'package:provider/provider.dart';
 
 class Tokenp extends StatelessWidget {
   final Token token;
@@ -16,10 +18,12 @@ class Tokenp extends StatelessWidget {
       case TokenType.red:
         return Colors.red;
     }
+    return Colors.red;
   }
 
   @override
   Widget build(BuildContext context) {
+    final gameState = Provider.of<GameState>(context);
     return AnimatedPositioned(
       duration: Duration(milliseconds: 100),
       left: dimentions[0],
@@ -28,7 +32,7 @@ class Tokenp extends StatelessWidget {
       height: dimentions[3],
       child: GestureDetector(
            onTap: (){
-             print(this.token.id);
+             gameState.moveToken(token, 3);
            },
               child: Card(
           elevation: 5,

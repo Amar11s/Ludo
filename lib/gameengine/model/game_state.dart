@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:ludo/gameengine/path.dart';
 
 import './position.dart';
 import './token.dart';
 
-class GameState {
+class GameState  with ChangeNotifier{
   List<Token> gameTokens = List<Token>(16);
   List<Position> starPositions;
   List<Position> greenInitital;
@@ -66,6 +67,7 @@ class GameState {
       pathPosition = step;
       _updateBoardState(token, destination, pathPosition);
     }
+    notifyListeners();
   }
 
   _updateBoardState(Token token, Position destination, int pathPosition) {
@@ -187,25 +189,25 @@ class GameState {
     switch (type) {
       case TokenType.green:
         {
-          List<int> node = Path.greenPath[0];
+          List<int> node = Path.greenPath[step];
           destination = Position(node[0], node[1]);
         }
         break;
       case TokenType.yellow:
         {
-          List<int> node = Path.yellowPath[0];
+          List<int> node = Path.yellowPath[step];
           destination = Position(node[0], node[1]);
         }
         break;
       case TokenType.blue:
         {
-          List<int> node = Path.bluePath[0];
+          List<int> node = Path.bluePath[step];
           destination = Position(node[0], node[1]);
         }
         break;
       case TokenType.red:
         {
-          List<int> node = Path.redPath[0];
+          List<int> node = Path.redPath[step];
           destination = Position(node[0], node[1]);
         }
         break;
