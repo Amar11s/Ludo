@@ -49,13 +49,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((context) {
-      dimentions = _getPosition(2, 2);
-      index = index + 1;
-      setState(() {});
+      setState(() {
+      dimentions = _getPosition(11, 3);
+      });
     });
   }
 
-  int index = 0;
   GlobalKey keyBar = GlobalKey();
   List<double> dimentions = [0, 0, 0, 0];
   List<List<GlobalKey>> keyRefrences;
@@ -72,13 +71,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onPressed() {
-    for (int i = 0; i < Path.greenPath.length; i++) {
+    for (int i = 0; i < Path.redPath.length; i++) {
       int duration = 100 + (i * 300);
       var future = new Future.delayed(Duration(milliseconds: duration), () {
+        setState(() {
         dimentions =
-            _getPosition(Path.greenPath[index][0], Path.greenPath[index][1]);
-        index = index + 1;
-        setState(() {});
+            _getPosition(Path.redPath[i][0], Path.redPath[i][1]);
+
+        });
       });
     }
   }
