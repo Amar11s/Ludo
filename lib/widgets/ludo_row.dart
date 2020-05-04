@@ -20,7 +20,7 @@ class LudoRow extends StatelessWidget {
               ),
               color: Utility.getColor(row, i)//Colors.transparent,
             ),
-            child: Text('${row},${i}'),
+            //child: Text('${row},${i}'),
           ),
         ),
       ));
