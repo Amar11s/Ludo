@@ -11,7 +11,6 @@ class GameState  with ChangeNotifier{
   List<Position> yellowInitital;
   List<Position> blueInitital;
   List<Position> redInitital;
-
   GameState() {
     this.gameTokens = [
       //Green Tokens home

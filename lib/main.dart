@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './gameengine/model/game_state.dart';
 import './widgets/gameplay.dart';
 import 'package:provider/provider.dart';
+import './widgets/dice.dart';
+import './gameengine/model/dice_model.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -13,8 +15,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChangeNotifierProvider<GameState>(
-        create: (context)=>GameState(),
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context)=>GameState()),
+          ChangeNotifierProvider(create: (context)=>DiceModel()),
+        ],
         child: MyHomePage(title: 'Flutter Demo Home Page')),
     );
   }
@@ -30,15 +35,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey keyBar = GlobalKey();
   void _onPressed() {
-    // for (int i = 0; i < Path.redPath.length; i++) {
-    //   int duration = 100 + (i * 300);
-    //   var future = new Future.delayed(Duration(milliseconds: duration), () {
-    //     setState(() {
-    //     dimentions =
-    //         _getPosition(Path.redPath[i][0], Path.redPath[i][1]);
-    //     });
-    //   });
-    // }
   }
   @override
   Widget build(BuildContext context) {
@@ -55,10 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 50.0,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _onPressed,
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: Dice(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

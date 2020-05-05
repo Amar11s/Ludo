@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../gameengine/model/dice_model.dart';
 import '../gameengine/model/game_state.dart';
 import '../gameengine/model/token.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import 'package:provider/provider.dart';
 class Tokenp extends StatelessWidget {
   final Token token;
   final List<double> dimentions;
+  Function(Token)callBack;
   Tokenp(this.token, this.dimentions);
   Color _getcolor() {
     switch (this.token.type) {
@@ -24,6 +26,7 @@ class Tokenp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameState = Provider.of<GameState>(context);
+    final dice = Provider.of<DiceModel>(context);
     return AnimatedPositioned(
       duration: Duration(milliseconds: 100),
       left: dimentions[0],
@@ -32,7 +35,7 @@ class Tokenp extends StatelessWidget {
       height: dimentions[3],
       child: GestureDetector(
            onTap: (){
-             gameState.moveToken(token, 6);
+             gameState.moveToken(token, dice.diceOne);
            },
               child: Card(
           elevation: 5,
