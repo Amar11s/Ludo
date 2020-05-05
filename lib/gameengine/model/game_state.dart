@@ -4,7 +4,7 @@ import 'package:ludo/gameengine/path.dart';
 import './position.dart';
 import './token.dart';
 
-class GameState  with ChangeNotifier{
+class GameState with ChangeNotifier {
   List<Token> gameTokens = List<Token>(16);
   List<Position> starPositions;
   List<Position> greenInitital;
@@ -67,28 +67,29 @@ class GameState  with ChangeNotifier{
       if (step > 56) return;
       destination = _getPosition(token.type, step);
       pathPosition = step;
-       var cutToken = _updateBoardState(token, destination, pathPosition);
-     int duration;  
-     for (int i = 1; i <= steps;i++){
-      duration = 100 + (i * 400);
-      var future = new Future.delayed(Duration(milliseconds: duration), () {
-      int stepLoc = token.positionInPath + 1;
-      this.gameTokens[token.id].tokenPosition = _getPosition(token.type, stepLoc);
-      this.gameTokens[token.id].positionInPath = stepLoc;
-      token.positionInPath = stepLoc; 
-      notifyListeners();
+      var cutToken = _updateBoardState(token, destination, pathPosition);
+      int duration;
+      for (int i = 1; i <= steps; i++) {
+        duration = 100 + (i * 400);
+        var future = new Future.delayed(Duration(milliseconds: duration), () {
+          int stepLoc = token.positionInPath + 1;
+          this.gameTokens[token.id].tokenPosition =
+              _getPosition(token.type, stepLoc);
+          this.gameTokens[token.id].positionInPath = stepLoc;
+          token.positionInPath = stepLoc;
+          notifyListeners();
+        });
+      }
+      var future2 =
+          new Future.delayed(Duration(milliseconds: duration + 300), () {
+        if (cutToken != null) _cutToken(cutToken);
+        notifyListeners();
       });
-     }
-      var future2 = new Future.delayed(Duration(milliseconds: duration+300), () {
-      if(cutToken != null) _cutToken(cutToken);
-      notifyListeners();
-      });
-
     }
   }
 
- Token _updateBoardState(Token token, Position destination, int pathPosition) {
-   Token cutToken;
+  Token _updateBoardState(Token token, Position destination, int pathPosition) {
+    Token cutToken;
     //when the destination is on any star
     if (this.starPositions.contains(destination)) {
       this.gameTokens[token.id].tokenState = TokenState.safe;
@@ -131,8 +132,7 @@ class GameState  with ChangeNotifier{
           //cut an unsafe token
           //_cutToken(tkn);
           cutToken = tkn;
-        }
-        else if(tkn.type == token.type){
+        } else if (tkn.type == token.type) {
           this.gameTokens[tkn.id].tokenState = TokenState.safeinpair;
         }
       }
@@ -141,9 +141,9 @@ class GameState  with ChangeNotifier{
           tokenAtDestinationSameType.length > 0
               ? TokenState.safeinpair
               : TokenState.normal;
-     // this.gameTokens[token.id].tokenPosition = destination;
-     // this.gameTokens[token.id].positionInPath = pathPosition;
-     return cutToken;
+      // this.gameTokens[token.id].tokenPosition = destination;
+      // this.gameTokens[token.id].positionInPath = pathPosition;
+      return cutToken;
     }
   }
 
@@ -173,37 +173,38 @@ class GameState  with ChangeNotifier{
   }
 
   _cutToken(Token token) {
-    switch(token.type){
+    switch (token.type) {
       case TokenType.green:
-      {
-      this.gameTokens[token.id].tokenState = TokenState.initial;
-      this.gameTokens[token.id].tokenPosition = this.greenInitital.first;
-      this.greenInitital.removeAt(0);
-      }
+        {
+          this.gameTokens[token.id].tokenState = TokenState.initial;
+          this.gameTokens[token.id].tokenPosition = this.greenInitital.first;
+          this.greenInitital.removeAt(0);
+        }
         break;
       case TokenType.yellow:
-      {
-      this.gameTokens[token.id].tokenState = TokenState.initial;
-      this.gameTokens[token.id].tokenPosition = this.yellowInitital.first;
-      this.yellowInitital.removeAt(0);
-      }
+        {
+          this.gameTokens[token.id].tokenState = TokenState.initial;
+          this.gameTokens[token.id].tokenPosition = this.yellowInitital.first;
+          this.yellowInitital.removeAt(0);
+        }
         break;
       case TokenType.blue:
-      {
-      this.gameTokens[token.id].tokenState = TokenState.initial;
-      this.gameTokens[token.id].tokenPosition = this.blueInitital.first;
-      this.blueInitital.removeAt(0);
-      }
+        {
+          this.gameTokens[token.id].tokenState = TokenState.initial;
+          this.gameTokens[token.id].tokenPosition = this.blueInitital.first;
+          this.blueInitital.removeAt(0);
+        }
         break;
       case TokenType.red:
-      {
-      this.gameTokens[token.id].tokenState = TokenState.initial;
-      this.gameTokens[token.id].tokenPosition = this.redInitital.first;
-      this.redInitital.removeAt(0);
-      }
+        {
+          this.gameTokens[token.id].tokenState = TokenState.initial;
+          this.gameTokens[token.id].tokenPosition = this.redInitital.first;
+          this.redInitital.removeAt(0);
+        }
         break;
     }
   }
+
   Position _getPosition(TokenType type, step) {
     Position destination;
     switch (type) {
