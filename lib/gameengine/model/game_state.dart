@@ -68,9 +68,9 @@ class GameState with ChangeNotifier {
       destination = _getPosition(token.type, step);
       pathPosition = step;
       var cutToken = _updateBoardState(token, destination, pathPosition);
-      int duration;
+      int duration = 0;
       for (int i = 1; i <= steps; i++) {
-        duration = 100 + (i * 400);
+        duration = duration + 500;
         var future = new Future.delayed(Duration(milliseconds: duration), () {
           int stepLoc = token.positionInPath + 1;
           this.gameTokens[token.id].tokenPosition =
@@ -80,14 +80,26 @@ class GameState with ChangeNotifier {
           notifyListeners();
         });
       }
-      var future2 =
-          new Future.delayed(Duration(milliseconds: duration + 300), () {
-        if (cutToken != null) _cutToken(cutToken);
+      if (cutToken != null) {
+      int cutSteps = cutToken.positionInPath;
+      for (int i = 1; i <= cutSteps; i++) {
+        duration = duration + 100;
+        var future2 = new Future.delayed(Duration(milliseconds: duration), () {
+            int stepLoc = cutToken.positionInPath - 1;
+            this.gameTokens[cutToken.id].tokenPosition =
+                _getPosition(cutToken.type, stepLoc);
+            this.gameTokens[cutToken.id].positionInPath = stepLoc;
+            cutToken.positionInPath = stepLoc;
+          notifyListeners();
+        });
+      }
+      var future2 = new Future.delayed(Duration(milliseconds: duration), () {
+        _cutToken(cutToken);
         notifyListeners();
       });
+      }
     }
   }
-
   Token _updateBoardState(Token token, Position destination, int pathPosition) {
     Token cutToken;
     //when the destination is on any star
