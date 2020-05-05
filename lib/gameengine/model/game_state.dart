@@ -67,9 +67,10 @@ class GameState  with ChangeNotifier{
       if (step > 56) return;
       destination = _getPosition(token.type, step);
       pathPosition = step;
-      _updateBoardState(token, destination, pathPosition);
+       var cutToken = _updateBoardState(token, destination, pathPosition);
+     int duration;  
      for (int i = 1; i <= steps;i++){
-       int duration = 100 + (i * 400);
+      duration = 100 + (i * 400);
       var future = new Future.delayed(Duration(milliseconds: duration), () {
       int stepLoc = token.positionInPath + 1;
       this.gameTokens[token.id].tokenPosition = _getPosition(token.type, stepLoc);
@@ -78,16 +79,22 @@ class GameState  with ChangeNotifier{
       notifyListeners();
       });
      }
+      var future2 = new Future.delayed(Duration(milliseconds: duration+300), () {
+      if(cutToken != null) _cutToken(cutToken);
+      notifyListeners();
+      });
+
     }
   }
 
-  _updateBoardState(Token token, Position destination, int pathPosition) {
+ Token _updateBoardState(Token token, Position destination, int pathPosition) {
+   Token cutToken;
     //when the destination is on any star
     if (this.starPositions.contains(destination)) {
       this.gameTokens[token.id].tokenState = TokenState.safe;
       //this.gameTokens[token.id].tokenPosition = destination;
       //this.gameTokens[token.id].positionInPath = pathPosition;
-      return;
+      return null;
     }
     List<Token> tokenAtDestination = this.gameTokens.where((tkn) {
       if (tkn.tokenPosition == destination) {
@@ -100,7 +107,7 @@ class GameState  with ChangeNotifier{
       this.gameTokens[token.id].tokenState = TokenState.normal;
       //this.gameTokens[token.id].tokenPosition = destination;
       //this.gameTokens[token.id].positionInPath = pathPosition;
-      return;
+      return null;
     }
     //check for same color at destination
     List<Token> tokenAtDestinationSameType = tokenAtDestination.where((tkn) {
@@ -116,13 +123,14 @@ class GameState  with ChangeNotifier{
       this.gameTokens[token.id].tokenState = TokenState.safeinpair;
       //this.gameTokens[token.id].tokenPosition = destination;
       //this.gameTokens[token.id].positionInPath = pathPosition;
-      return;
+      return null;
     }
     if (tokenAtDestinationSameType.length < tokenAtDestination.length) {
       for (Token tkn in tokenAtDestination) {
         if (tkn.type != token.type && tkn.tokenState != TokenState.safeinpair) {
           //cut an unsafe token
-          _cutToken(tkn);
+          //_cutToken(tkn);
+          cutToken = tkn;
         }
         else if(tkn.type == token.type){
           this.gameTokens[tkn.id].tokenState = TokenState.safeinpair;
@@ -135,6 +143,7 @@ class GameState  with ChangeNotifier{
               : TokenState.normal;
      // this.gameTokens[token.id].tokenPosition = destination;
      // this.gameTokens[token.id].positionInPath = pathPosition;
+     return cutToken;
     }
   }
 
