@@ -3,10 +3,11 @@ import 'package:ludo/gameengine/model/token.dart';
 import './board.dart';
 import './tokenp.dart';
 import '../gameengine/model/game_state.dart';
+import 'package:provider/provider.dart';
 class GamePlay extends StatefulWidget {
   final GlobalKey keyBar;
-  final GameState gameState;
-  GamePlay(this.keyBar,this.gameState);
+  GameState gameState;
+  GamePlay(this.keyBar);
   @override
   _GamePlayState createState() => _GamePlayState();
 }
@@ -69,6 +70,7 @@ class _GamePlayState extends State<GamePlay> {
     }
   @override
   Widget build(BuildContext context) {
+    this.widget.gameState = Provider.of<GameState>(context);
     return Stack(
         children: [
           Board(keyRefrences),

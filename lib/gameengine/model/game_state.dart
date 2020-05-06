@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ludo/gameengine/path.dart';
-
 import './position.dart';
 import './token.dart';
 
@@ -11,6 +10,8 @@ class GameState with ChangeNotifier {
   List<Position> yellowInitital;
   List<Position> blueInitital;
   List<Position> redInitital;
+  int turnNumber;
+  
   GameState() {
     this.gameTokens = [
       //Green Tokens home

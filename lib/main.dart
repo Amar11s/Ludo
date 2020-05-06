@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ludo/gameengine/model/game_manager.dart';
 import './gameengine/model/game_state.dart';
 import './widgets/gameplay.dart';
 import 'package:provider/provider.dart';
@@ -34,24 +35,23 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey keyBar = GlobalKey();
-  void _onPressed() {
-  }
+  final GameManager manager = GameManager();
   @override
   Widget build(BuildContext context) {
-    final gameState = Provider.of<GameState>(context);
+    final dice = Provider.of<DiceModel>(context);
     return Scaffold(
       appBar: AppBar(
         key: keyBar,
         title: Text('Sample Code'),
       ),
-      body: GamePlay(keyBar,gameState),
+      body: GamePlay(keyBar),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(
           height: 50.0,
         ),
       ),
-      floatingActionButton: Dice(),
+      floatingActionButton: Dice(dice),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
