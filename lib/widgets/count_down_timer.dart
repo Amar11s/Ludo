@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
+import 'package:ludo/gameengine/model/game_manager.dart';
+
 class CountDownTimer extends StatefulWidget {
   final bool timer;
   CountDownTimer(this.timer);
@@ -11,6 +13,7 @@ class CountDownTimer extends StatefulWidget {
 class _CountDownTimerState extends State<CountDownTimer>
     with TickerProviderStateMixin {
   AnimationController controller;
+  Color stroke = GameManager().indicator();
   @override
   void initState() {
     super.initState();
@@ -49,7 +52,7 @@ class _CountDownTimerState extends State<CountDownTimer>
                                 painter: CustomTimerPainter(
                               animation: controller,
                               backgroundColor: Colors.white,
-                              color: Colors.red,//themeData.indicatorColor,
+                              color: stroke,//themeData.indicatorColor,
                             )),
                           ),
                         ],

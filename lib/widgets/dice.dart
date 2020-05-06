@@ -4,7 +4,8 @@ import '../gameengine/model/dice_model.dart';
 import '../widgets/count_down_timer.dart';
 class Dice extends StatelessWidget {
   final DiceModel dice;
-  Dice(this.dice);
+  final bool turn;
+  Dice(this.dice,this.turn);
   @override
   Widget build(BuildContext context) {
     List<String> _diceOneImages = [
@@ -22,7 +23,7 @@ class Dice extends StatelessWidget {
       fit: BoxFit.fill,
     );
     _rollDice() {
-      GameManager.updateDices();
+        GameManager.updateDices();
     }
     return Card(
     shape: RoundedRectangleBorder(
@@ -45,7 +46,7 @@ class Dice extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => _rollDice(),
+                          onTap: turn? () => _rollDice(): null,
                           child: img,
                         ),
                       ),

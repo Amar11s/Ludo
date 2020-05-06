@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 50.0,
         ),
       ),
-      floatingActionButton: Dice(dice),
+      floatingActionButton: Dice(dice,GameManager.userTurn()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
