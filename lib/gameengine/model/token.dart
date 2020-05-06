@@ -20,4 +20,11 @@ class Token
   TokenState tokenState;
   int        positionInPath;
   Token(this.type,this.tokenPosition,this.tokenState,this.id);
+
+  Map toJson() {
+    Map tokenPosition =
+        this.tokenPosition != null ? this.tokenPosition.toJson() : null;
+    return {'id': id, 'TokenType': type.index, 'Position': tokenPosition,'TokenState':tokenState.index,'PositionInPath':positionInPath};
+  }
+
 }

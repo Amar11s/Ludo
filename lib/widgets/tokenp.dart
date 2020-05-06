@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 class Tokenp extends StatelessWidget {
   final Token token;
   final List<double> dimentions;
-  Function(Token)callBack;
   Tokenp(this.token, this.dimentions);
   Color _getcolor() {
     switch (this.token.type) {
@@ -26,7 +25,7 @@ class Tokenp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gameState = Provider.of<GameState>(context);
-    final dice = Provider.of<DiceModel>(context);
+    final dice = DiceModel();
     return AnimatedPositioned(
       duration: Duration(milliseconds: 100),
       left: dimentions[0],

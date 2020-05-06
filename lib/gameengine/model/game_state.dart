@@ -11,7 +11,31 @@ class GameState with ChangeNotifier {
   List<Position> blueInitital;
   List<Position> redInitital;
   int turnNumber;
-  
+  Map toJson() {
+
+    List<Map> gameTokens =
+        this.gameTokens != null ? this.gameTokens.map((i) => i.toJson()).toList() : null;
+    List<Map> starPositions =
+        this.starPositions != null ? this.starPositions.map((i) => i.toJson()).toList() : null;
+    List<Map> greenInitital =
+        this.greenInitital != null ? this.greenInitital.map((i) => i.toJson()).toList() : null;
+    List<Map> yellowInitital =
+        this.yellowInitital != null ? this.yellowInitital.map((i) => i.toJson()).toList() : null;
+    List<Map> blueInitital =
+        this.blueInitital != null ? this.blueInitital.map((i) => i.toJson()).toList() : null;
+    List<Map> redInitital =
+        this.redInitital != null ? this.redInitital.map((i) => i.toJson()).toList() : null;
+
+    return {
+      'gameTokens': gameTokens,
+      'starPositions': starPositions,
+      'greenInitital': greenInitital,
+      'yellowInitital': yellowInitital,
+      'blueInitital':blueInitital,
+      'redInitital':redInitital
+    };
+  }
+
   GameState() {
     this.gameTokens = [
       //Green Tokens home
