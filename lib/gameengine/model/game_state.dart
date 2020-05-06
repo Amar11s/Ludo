@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ludo/gameengine/path.dart';
+import '../../gameengine/model/game_manager.dart';
+import '../../gameengine/path.dart';
 import './position.dart';
 import './token.dart';
 
@@ -10,7 +11,7 @@ class GameState with ChangeNotifier {
   List<Position> yellowInitital;
   List<Position> blueInitital;
   List<Position> redInitital;
-  int turnNumber;
+  List<int> arrayOf6s =[]; 
   Map toJson() {
 
     List<Map> gameTokens =
@@ -25,7 +26,6 @@ class GameState with ChangeNotifier {
         this.blueInitital != null ? this.blueInitital.map((i) => i.toJson()).toList() : null;
     List<Map> redInitital =
         this.redInitital != null ? this.redInitital.map((i) => i.toJson()).toList() : null;
-
     return {
       'gameTokens': gameTokens,
       'starPositions': starPositions,
@@ -35,9 +35,9 @@ class GameState with ChangeNotifier {
       'redInitital':redInitital
     };
   }
-
-  GameState() {
-    this.gameTokens = [
+  static final GameState _shared = GameState._internal();
+  GameState._internal(){
+        this.gameTokens = [
       //Green Tokens home
       Token(TokenType.green, Position(2, 2), TokenState.initial, 0),
       Token(TokenType.green, Position(2, 3), TokenState.initial, 1),
@@ -74,7 +74,30 @@ class GameState with ChangeNotifier {
     this.blueInitital = [];
     this.redInitital = [];
   }
+  factory GameState() {
+    return _shared;
+  }
+  renderMove(Token token,int step){
+    if(this.arrayOf6s.length == 2){
+      this.arrayOf6s =[];
+      return;
+    }
+    switch(step){
+      case 6:{
+       this.arrayOf6s.add(step);
+      }
+      break;
+      default:{
+       this.arrayOf6s = []; 
+      }
+      break;
+    }
+    GameManager().postMove(token, step);
+    moveToken(token, step);
+  }
+
   moveToken(Token token, int steps) {
+    if(!GameManager.userTurn())return;
     Position destination;
     int pathPosition;
     if (token.tokenState == TokenState.home) return;

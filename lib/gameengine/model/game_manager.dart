@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ludo/gameengine/model/dice_model.dart';
 import '../model/token.dart';
-
+import '../model/game_state.dart';
 class GameManager {
   TokenType turn = TokenType.green;
   int gameTurn;
@@ -15,10 +16,21 @@ class GameManager {
   }
   static setGamestream() {
     Firestore.instance.collection('game').snapshots().listen((data) {
+      int turn = data.documents[0]['sender'];
+      if(turn != _shared.turn.index){
+      print('update called');
       int step = data.documents[0]['dice'];
       _shared.gameTurn = data.documents[0]['turn'];
+      var move = data.documents[0]['move'];
+       if(move.containsKey('token'))
+       {
+      var token = Token.fromjson(json.decode(move['token']));
+      int steps = move['step'];
+        GameState().moveToken(token, steps);
+       }
       if (step != null && step < 7) {
         setDice(step);
+      }
       }
     });
   }
@@ -36,7 +48,7 @@ class GameManager {
       Firestore.instance
           .collection('game')
           .document('XPXpI4WXvwkCMhFHVReD')
-          .updateData({'dice': DiceModel().diceOne});
+          .updateData({'dice': DiceModel().diceOne, 'sender':_shared.turn.index});
     });
   }
 
@@ -74,4 +86,10 @@ class GameManager {
     }
     return Colors.transparent;
   }
+   postMove(Token token, int step){
+      Firestore.instance
+          .collection('game')
+          .document('XPXpI4WXvwkCMhFHVReD')
+          .updateData({'move':{'token': jsonEncode(token),'step':step}, 'sender':turn.index});
+   }
 }
