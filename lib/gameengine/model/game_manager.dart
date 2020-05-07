@@ -18,9 +18,10 @@ class GameManager {
     Firestore.instance.collection('game').snapshots().listen((data) {
       int turn = data.documents[0]['sender'];
       if(turn != _shared.turn.index){
-      print('update called');
       int step = data.documents[0]['dice'];
       _shared.gameTurn = data.documents[0]['turn'];
+      print('game turn ----${_shared.gameTurn}');
+
       var move = data.documents[0]['move'];
        if(move.containsKey('token'))
        {
@@ -48,7 +49,7 @@ class GameManager {
       Firestore.instance
           .collection('game')
           .document('XPXpI4WXvwkCMhFHVReD')
-          .updateData({'dice': DiceModel().diceOne, 'sender':_shared.turn.index});
+          .updateData({'dice': DiceModel().diceOne, 'sender':_shared.turn.index,'turn':2});
     });
   }
 
@@ -90,6 +91,6 @@ class GameManager {
       Firestore.instance
           .collection('game')
           .document('XPXpI4WXvwkCMhFHVReD')
-          .updateData({'move':{'token': jsonEncode(token),'step':step}, 'sender':turn.index});
+          .updateData({'move':{'token': jsonEncode(token),'step':step}, 'sender':turn.index,'turn':2});
    }
 }
