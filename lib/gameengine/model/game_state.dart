@@ -94,7 +94,7 @@ class GameState with ChangeNotifier {
     }
     GameManager().postMove(token, step);
     moveToken(token, step);
-    GameManager().gameTurn =2;
+    GameManager().gameTurn =0;
   }
 
   moveToken(Token token, int steps) {

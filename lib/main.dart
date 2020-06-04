@@ -3,7 +3,7 @@ import 'package:ludo/gameengine/model/game_manager.dart';
 import './gameengine/model/game_state.dart';
 import './widgets/gameplay.dart';
 import 'package:provider/provider.dart';
-import './widgets/dice.dart';
+import './widgets/bottom_bar.dart';
 import './gameengine/model/dice_model.dart';
 void main() => runApp(MyApp());
 
@@ -38,7 +38,6 @@ class _MyHomePageState extends State<MyHomePage> {
   final GameManager manager = GameManager();
   @override
   Widget build(BuildContext context) {
-    final dice = Provider.of<DiceModel>(context);
     return Scaffold(
       appBar: AppBar(
         key: keyBar,
@@ -51,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 50.0,
         ),
       ),
-      floatingActionButton: Dice(dice,GameManager.userTurn()),
+      floatingActionButton: BottomBar(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

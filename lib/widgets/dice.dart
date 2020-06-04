@@ -22,6 +22,21 @@ class Dice extends StatelessWidget {
       gaplessPlayback: true,
       fit: BoxFit.fill,
     );
+    List<String> _diceGreyImages = [
+      "assets/1g.png",
+      "assets/2g.png",
+      "assets/3g.png",
+      "assets/4g.png",
+      "assets/5g.png",
+      "assets/6g.png",
+    ];
+    final cc = dice.diceOneCount;
+    var imgg = Image.asset(
+      _diceGreyImages[cc - 1],
+      gaplessPlayback: true,
+      fit: BoxFit.fill,
+    );
+
     _rollDice() {
         GameManager.updateDices();
     }
@@ -47,7 +62,7 @@ class Dice extends StatelessWidget {
                       Expanded(
                         child: GestureDetector(
                           onTap: turn? () => _rollDice(): null,
-                          child: img,
+                          child: turn? img : imgg,
                         ),
                       ),
                     ],

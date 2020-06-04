@@ -24,7 +24,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   equatable: ^1.1.0
-  cloud_firestore: ^0.13.5
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +50,13 @@ flutter:
     - assets/4.png
     - assets/5.png
     - assets/6.png
+    - assets/1g.png
+    - assets/2g.png
+    - assets/3g.png
+    - assets/4g.png
+    - assets/5g.png
+    - assets/6g.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -5,7 +5,7 @@ import 'package:ludo/gameengine/model/dice_model.dart';
 import '../model/token.dart';
 import '../model/game_state.dart';
 class GameManager {
-  TokenType turn = TokenType.green;
+  TokenType turn = TokenType.blue;
   int gameTurn;
   static final GameManager _shared = GameManager._internal();
   GameManager._internal();
@@ -15,25 +15,24 @@ class GameManager {
     return _shared;
   }
   static setGamestream() {
-    Firestore.instance.collection('game').snapshots().listen((data) {
-      int turn = data.documents[0]['sender'];
-      if(turn != _shared.turn.index){
-      int step = data.documents[0]['dice'];
-      _shared.gameTurn = data.documents[0]['turn'];
-      print('game turn ----${_shared.gameTurn}');
-
-      var move = data.documents[0]['move'];
-       if(move.containsKey('token'))
-       {
-      var token = Token.fromjson(json.decode(move['token']));
-      int steps = move['step'];
-        GameState().moveToken(token, steps);
-       }
-      if (step != null && step < 7) {
-        setDice(step);
-      }
-      }
-    });
+    // Firestore.instance.collection('game').snapshots().listen((data) {
+    //   int turn = data.documents[0]['sender'];
+    //   if(turn != _shared.turn.index){
+    //   var moveType = data.documents[0]['type'];  
+    //   int step = data.documents[0]['dice'];
+    //   _shared.gameTurn = data.documents[0]['turn'];
+    //   var move = data.documents[0]['move'];
+    //    if(move.containsKey('token') && moveType == 'move')
+    //    {
+    //   var token = Token.fromjson(json.decode(move['token']));
+    //   int steps = move['step'];
+    //     GameState().moveToken(token, steps);
+    //    }
+    //   if (step != null && step < 7 && moveType == 'dice_roll') {
+    //     setDice(step);
+    //   }
+    //   }
+    // });
   }
 
   //update dice
@@ -48,8 +47,8 @@ class GameManager {
     var future = Future.delayed(Duration(milliseconds: duration), () {
       Firestore.instance
           .collection('game')
-          .document('XPXpI4WXvwkCMhFHVReD')
-          .updateData({'dice': DiceModel().diceOne, 'sender':_shared.turn.index,'turn':2});
+          .document('<YOUR KEY>')
+          .updateData({'dice': DiceModel().diceOne, 'sender':_shared.turn.index,'turn':0,'type':'dice_roll'});
     });
   }
 
@@ -90,7 +89,7 @@ class GameManager {
    postMove(Token token, int step){
       Firestore.instance
           .collection('game')
-          .document('XPXpI4WXvwkCMhFHVReD')
-          .updateData({'move':{'token': jsonEncode(token),'step':step}, 'sender':turn.index,'turn':2});
+          .document('<YOUR KEY>')
+          .updateData({'move':{'token': jsonEncode(token),'step':step}, 'sender':turn.index,'turn':0,'type':'move'});
    }
 }
