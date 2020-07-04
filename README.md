@@ -1,6 +1,6 @@
 # ludo
 
-Ludo Game project.
+Ludo Game project. Use prefirebase branch
 
 ## Getting Started
 
