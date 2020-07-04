@@ -4,7 +4,7 @@ Ludo Game project.
 
 ## Getting Started
 
-This project is free to use and can act starting point for your awesome ludo app.
+This project is free to use and can act as a starting point for your awesome ludo app.
 
 ## License
 MIT License
