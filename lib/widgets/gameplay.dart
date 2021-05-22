@@ -37,7 +37,7 @@ class _GamePlayState extends State<GamePlay> {
     return keysMain;
   }
   List<double> _getPosition(int row, int column) {
-    var listFrame = List<double>();
+    List<double> listFrame = [];
     double x;
     double y;
     double w;
