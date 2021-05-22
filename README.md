@@ -1,10 +1,16 @@
+#How to start
+1. Clone project and switch to prefirebase
+2. Go to project folder and run flutter run
+3. On simulator click on Dice till you get Six
+4. Touch on the peice you want to open
+5. Click on dice and click on open peice it will move to number of peices in dice
 # ludo
 
 Ludo Game project. Use prefirebase branch
 
 ## Getting Started
 
-This project is free to use and can act starting point for your awesome ludo app.
+This project is free to use and can act as a starting point for your awesome ludo app.
 
 ## License
 MIT License
