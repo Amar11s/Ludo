@@ -5,7 +5,7 @@ import './position.dart';
 import './token.dart';
 
 class GameState with ChangeNotifier {
-  List<Token> gameTokens = List<Token>(16);
+  List<Token> gameTokens = [];
   List<Position> starPositions;
   List<Position> greenInitital;
   List<Position> yellowInitital;
