@@ -4,6 +4,7 @@ import './widgets/gameplay.dart';
 import 'package:provider/provider.dart';
 import './widgets/dice.dart';
 import './gameengine/model/dice_model.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -11,31 +12,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo', 
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context)=>GameState()),
-          ChangeNotifierProvider(create: (context)=>DiceModel()),
-        ],
-        child: MyHomePage(title: 'Flutter Demo Home Page')),
+      home: MultiProvider(providers: [
+        ChangeNotifierProvider(create: (context) => GameState()),
+        ChangeNotifierProvider(create: (context) => DiceModel()),
+      ], child: MyHomePage(title: 'Flutter Demo Home Page')),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
+
   final String title;
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey keyBar = GlobalKey();
-  void _onPressed() {
-  }
+  void _onPressed() {}
   @override
   Widget build(BuildContext context) {
     final gameState = Provider.of<GameState>(context);
@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
         key: keyBar,
         title: Text('Sample Code'),
       ),
-      body: GamePlay(keyBar,gameState),
+      body: GamePlay(keyBar, gameState),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(

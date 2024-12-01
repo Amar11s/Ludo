@@ -7,20 +7,19 @@ import 'package:provider/provider.dart';
 class Tokenp extends StatelessWidget {
   final Token token;
   final List<double> dimentions;
-  Function(Token)callBack;
+  //final Function(Token) callBack;
   Tokenp(this.token, this.dimentions);
   Color _getcolor() {
     switch (this.token.type) {
       case TokenType.green:
         return Colors.green;
       case TokenType.yellow:
-        return Colors.yellow[900];
+        return const Color.fromARGB(255, 245, 127, 23);
       case TokenType.blue:
-        return Colors.blue[600];
+        return const Color.fromARGB(255, 30, 136, 229);
       case TokenType.red:
         return Colors.red;
     }
-    return Colors.red;
   }
 
   @override
@@ -34,10 +33,10 @@ class Tokenp extends StatelessWidget {
       width: dimentions[2],
       height: dimentions[3],
       child: GestureDetector(
-           onTap: (){
-             gameState.moveToken(token, dice.diceOne);
-           },
-              child: Card(
+        onTap: () {
+          gameState.moveToken(token, dice.diceOne);
+        },
+        child: Card(
           elevation: 5,
           child: Container(
             decoration: BoxDecoration(
