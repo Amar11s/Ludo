@@ -14,16 +14,14 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^4.0.5+1
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  equatable: ^1.1.0
+  provider: ^6.1.2 # Latest version of provider at the time of update
+  cupertino_icons: ^1.0.8 # Updated for Dart 3 compatibility
+  equatable: ^2.0.7 # Latest version of equatable
 dev_dependencies:
   flutter_test:
     sdk: flutter

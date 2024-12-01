@@ -6,11 +6,11 @@ import './token.dart';
 
 class GameState with ChangeNotifier {
   List<Token> gameTokens = [];
-  List<Position> starPositions;
-  List<Position> greenInitital;
-  List<Position> yellowInitital;
-  List<Position> blueInitital;
-  List<Position> redInitital;
+  List<Position> starPositions = [];
+  List<Position> greenInitital = [];
+  List<Position> yellowInitital = [];
+  List<Position> blueInitital = [];
+  List<Position> redInitital = [];
   GameState() {
     this.gameTokens = [
       //Green Tokens home
@@ -81,27 +81,30 @@ class GameState with ChangeNotifier {
         });
       }
       if (cutToken != null) {
-      int cutSteps = cutToken.positionInPath;
-      for (int i = 1; i <= cutSteps; i++) {
-        duration = duration + 100;
-        var future2 = new Future.delayed(Duration(milliseconds: duration), () {
+        int cutSteps = cutToken.positionInPath;
+        for (int i = 1; i <= cutSteps; i++) {
+          duration = duration + 100;
+          var future2 =
+              new Future.delayed(Duration(milliseconds: duration), () {
             int stepLoc = cutToken.positionInPath - 1;
             this.gameTokens[cutToken.id].tokenPosition =
                 _getPosition(cutToken.type, stepLoc);
             this.gameTokens[cutToken.id].positionInPath = stepLoc;
             cutToken.positionInPath = stepLoc;
+            notifyListeners();
+          });
+        }
+        var future2 = new Future.delayed(Duration(milliseconds: duration), () {
+          _cutToken(cutToken);
           notifyListeners();
         });
       }
-      var future2 = new Future.delayed(Duration(milliseconds: duration), () {
-        _cutToken(cutToken);
-        notifyListeners();
-      });
-      }
     }
   }
-  Token _updateBoardState(Token token, Position destination, int pathPosition) {
-    Token cutToken;
+
+  Token? _updateBoardState(
+      Token token, Position destination, int pathPosition) {
+    Token? cutToken;
     //when the destination is on any star
     if (this.starPositions.contains(destination)) {
       this.gameTokens[token.id].tokenState = TokenState.safe;
