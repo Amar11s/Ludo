@@ -1,5 +1,6 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
+
 class DiceModel with ChangeNotifier {
   static final DiceModel _shared =   DiceModel._internal(); 
   DiceModel._internal(); 

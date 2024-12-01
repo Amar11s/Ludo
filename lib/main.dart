@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ludo/gameengine/model/game_manager.dart';
 import './gameengine/model/game_state.dart';
 import './widgets/gameplay.dart';
 import 'package:provider/provider.dart';
-import './widgets/bottom_bar.dart';
+import './widgets/dice.dart';
 import './gameengine/model/dice_model.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -16,41 +16,42 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context)=>GameState()),
-          ChangeNotifierProvider(create: (context)=>DiceModel()),
-        ],
-        child: MyHomePage(title: 'Flutter Demo Home Page')),
+      home: MultiProvider(providers: [
+        ChangeNotifierProvider(create: (context) => GameState()),
+        ChangeNotifierProvider(create: (context) => DiceModel()),
+      ], child: MyHomePage(title: 'Flutter Demo Home Page')),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({super.key, required this.title});
+
   final String title;
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey keyBar = GlobalKey();
-  final GameManager manager = GameManager();
+  void _onPressed() {}
   @override
   Widget build(BuildContext context) {
+    final gameState = Provider.of<GameState>(context);
     return Scaffold(
       appBar: AppBar(
         key: keyBar,
         title: Text('Sample Code'),
       ),
-      body: GamePlay(keyBar),
+      body: GamePlay(keyBar, gameState),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(
           height: 50.0,
         ),
       ),
-      floatingActionButton: BottomBar(),
+      floatingActionButton: Dice(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

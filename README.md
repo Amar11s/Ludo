@@ -1,18 +1,6 @@
-
-
-
-
-https://user-images.githubusercontent.com/6625808/119228550-24324d00-bb31-11eb-85fb-fdfae62440c6.mov
-
-# How to start
-1. Clone project and switch to prefirebase Branch
-2. Go to project folder and run flutter run
-3. On simulator click on Dice till you get Six
-4. Touch on the peice you want to open
-5. Click on dice and click on open peice it will move to number of peices in dice
 # ludo
 
-Ludo Game project. Use prefirebase branch
+Ludo Game project.
 
 ## Getting Started
 

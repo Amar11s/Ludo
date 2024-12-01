@@ -1,43 +1,18 @@
 import 'package:flutter/material.dart';
-import '../../gameengine/model/game_manager.dart';
-import '../../gameengine/path.dart';
+import 'package:ludo/gameengine/path.dart';
+
 import './position.dart';
 import './token.dart';
 
 class GameState with ChangeNotifier {
-  List<Token> gameTokens = List<Token>(16);
-  List<Position> starPositions;
-  List<Position> greenInitital;
-  List<Position> yellowInitital;
-  List<Position> blueInitital;
-  List<Position> redInitital;
-  List<int> arrayOf6s =[]; 
-  Map toJson() {
-
-    List<Map> gameTokens =
-        this.gameTokens != null ? this.gameTokens.map((i) => i.toJson()).toList() : null;
-    List<Map> starPositions =
-        this.starPositions != null ? this.starPositions.map((i) => i.toJson()).toList() : null;
-    List<Map> greenInitital =
-        this.greenInitital != null ? this.greenInitital.map((i) => i.toJson()).toList() : null;
-    List<Map> yellowInitital =
-        this.yellowInitital != null ? this.yellowInitital.map((i) => i.toJson()).toList() : null;
-    List<Map> blueInitital =
-        this.blueInitital != null ? this.blueInitital.map((i) => i.toJson()).toList() : null;
-    List<Map> redInitital =
-        this.redInitital != null ? this.redInitital.map((i) => i.toJson()).toList() : null;
-    return {
-      'gameTokens': gameTokens,
-      'starPositions': starPositions,
-      'greenInitital': greenInitital,
-      'yellowInitital': yellowInitital,
-      'blueInitital':blueInitital,
-      'redInitital':redInitital
-    };
-  }
-  static final GameState _shared = GameState._internal();
-  GameState._internal(){
-        this.gameTokens = [
+  List<Token> gameTokens = [];
+  List<Position> starPositions = [];
+  List<Position> greenInitital = [];
+  List<Position> yellowInitital = [];
+  List<Position> blueInitital = [];
+  List<Position> redInitital = [];
+  GameState() {
+    this.gameTokens = [
       //Green Tokens home
       Token(TokenType.green, Position(2, 2), TokenState.initial, 0),
       Token(TokenType.green, Position(2, 3), TokenState.initial, 1),
@@ -74,31 +49,7 @@ class GameState with ChangeNotifier {
     this.blueInitital = [];
     this.redInitital = [];
   }
-  factory GameState() {
-    return _shared;
-  }
-  renderMove(Token token,int step){
-    if(this.arrayOf6s.length == 2){
-      this.arrayOf6s =[];
-      return;
-    }
-    switch(step){
-      case 6:{
-       this.arrayOf6s.add(step);
-      }
-      break;
-      default:{
-       this.arrayOf6s = []; 
-      }
-      break;
-    }
-    GameManager().postMove(token, step);
-    moveToken(token, step);
-    GameManager().gameTurn =0;
-  }
-
   moveToken(Token token, int steps) {
-    if(!GameManager.userTurn())return;
     Position destination;
     int pathPosition;
     if (token.tokenState == TokenState.home) return;
@@ -130,27 +81,30 @@ class GameState with ChangeNotifier {
         });
       }
       if (cutToken != null) {
-      int cutSteps = cutToken.positionInPath;
-      for (int i = 1; i <= cutSteps; i++) {
-        duration = duration + 100;
-        var future2 = new Future.delayed(Duration(milliseconds: duration), () {
+        int cutSteps = cutToken.positionInPath;
+        for (int i = 1; i <= cutSteps; i++) {
+          duration = duration + 100;
+          var future2 =
+              new Future.delayed(Duration(milliseconds: duration), () {
             int stepLoc = cutToken.positionInPath - 1;
             this.gameTokens[cutToken.id].tokenPosition =
                 _getPosition(cutToken.type, stepLoc);
             this.gameTokens[cutToken.id].positionInPath = stepLoc;
             cutToken.positionInPath = stepLoc;
+            notifyListeners();
+          });
+        }
+        var future2 = new Future.delayed(Duration(milliseconds: duration), () {
+          _cutToken(cutToken);
           notifyListeners();
         });
       }
-      var future2 = new Future.delayed(Duration(milliseconds: duration), () {
-        _cutToken(cutToken);
-        notifyListeners();
-      });
-      }
     }
   }
-  Token _updateBoardState(Token token, Position destination, int pathPosition) {
-    Token cutToken;
+
+  Token? _updateBoardState(
+      Token token, Position destination, int pathPosition) {
+    Token? cutToken;
     //when the destination is on any star
     if (this.starPositions.contains(destination)) {
       this.gameTokens[token.id].tokenState = TokenState.safe;

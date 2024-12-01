@@ -3,16 +3,17 @@ import 'package:ludo/gameengine/model/token.dart';
 import './board.dart';
 import './tokenp.dart';
 import '../gameengine/model/game_state.dart';
-import 'package:provider/provider.dart';
+
 class GamePlay extends StatefulWidget {
   final GlobalKey keyBar;
-  GameState gameState;
-  GamePlay(this.keyBar);
+  final GameState gameState;
+  GamePlay(this.keyBar, this.gameState);
   @override
   _GamePlayState createState() => _GamePlayState();
 }
+
 class _GamePlayState extends State<GamePlay> {
-    void initState() {
+  void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((context) {
       setState(() {
@@ -20,9 +21,14 @@ class _GamePlayState extends State<GamePlay> {
       });
     });
   }
+
+  callBack(Token token) {
+    print(token);
+  }
+
   bool boardBuild = false;
   List<double> dimentions = [0, 0, 0, 0];
-  final List<List<GlobalKey>> keyRefrences =_getGlobalKeys();
+  final List<List<GlobalKey>> keyRefrences = _getGlobalKeys();
   static List<List<GlobalKey>> _getGlobalKeys() {
     List<List<GlobalKey>> keysMain = [];
     for (int i = 0; i < 15; i++) {
@@ -34,18 +40,20 @@ class _GamePlayState extends State<GamePlay> {
     }
     return keysMain;
   }
+
   List<double> _getPosition(int row, int column) {
-    var listFrame = List<double>();
+    List<double> listFrame = [];
     double x;
     double y;
     double w;
     double h;
-    if(this.widget.keyBar.currentContext == null) return [0,0,0,0];
-    final RenderBox renderBoxBar = this.widget.keyBar.currentContext.findRenderObject();
+    if (this.widget.keyBar.currentContext == null) return [0, 0, 0, 0];
+    final RenderBox renderBoxBar =
+        this.widget.keyBar.currentContext?.findRenderObject() as RenderBox;
     final sizeBar = renderBoxBar.size;
     final cellBoxKey = keyRefrences[row][column];
     final RenderBox renderBoxCell =
-        cellBoxKey.currentContext.findRenderObject();
+        cellBoxKey.currentContext?.findRenderObject() as RenderBox;
     final positionCell = renderBoxCell.localToGlobal(Offset.zero);
     x = positionCell.dx + 1;
     y = (positionCell.dy - sizeBar.height + 1);
@@ -57,22 +65,18 @@ class _GamePlayState extends State<GamePlay> {
     listFrame.add(h);
     return listFrame;
   }
-    List<Tokenp> _getTokenList(){
+
+  List<Tokenp> _getTokenList() {
     List<Tokenp> widgets = [];
-    for(Token token in this.widget.gameState.gameTokens)
-    {
-      widgets.add(Tokenp(token,_getPosition(token.tokenPosition.row, token.tokenPosition.column)));
+    for (Token token in this.widget.gameState.gameTokens) {
+      widgets.add(Tokenp(token,
+          _getPosition(token.tokenPosition.row, token.tokenPosition.column)));
     }
     return widgets;
-    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    this.widget.gameState = Provider.of<GameState>(context);
-    return Stack(
-        children: [
-          Board(keyRefrences),
-         ... _getTokenList()
-        ]
-      );
+    return Stack(children: [Board(keyRefrences), ..._getTokenList()]);
   }
 }
