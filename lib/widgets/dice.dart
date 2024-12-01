@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:ludo/gameengine/model/game_manager.dart';
 import '../gameengine/model/dice_model.dart';
+import '../widgets/count_down_timer.dart';
 class Dice extends StatelessWidget {
-
-  void updateDices(DiceModel dice) {
-    for (int i = 0; i < 6; i++) {
-    var  duration = 100 + i * 100;
-    var future  = Future.delayed(Duration(milliseconds: duration),(){
-      dice.generateDiceOne();
-    });
-    }
-  }
-
+  final DiceModel dice;
+  final bool turn;
+  Dice(this.dice,this.turn);
   @override
   Widget build(BuildContext context) {
     List<String> _diceOneImages = [
@@ -22,30 +16,59 @@ class Dice extends StatelessWidget {
       "assets/5.png",
       "assets/6.png",
     ];
-    final dice = Provider.of<DiceModel>(context);
     final c = dice.diceOneCount;
     var img = Image.asset(
       _diceOneImages[c - 1],
       gaplessPlayback: true,
       fit: BoxFit.fill,
     );
+    List<String> _diceGreyImages = [
+      "assets/1g.png",
+      "assets/2g.png",
+      "assets/3g.png",
+      "assets/4g.png",
+      "assets/5g.png",
+      "assets/6g.png",
+    ];
+    final cc = dice.diceOneCount;
+    var imgg = Image.asset(
+      _diceGreyImages[cc - 1],
+      gaplessPlayback: true,
+      fit: BoxFit.fill,
+    );
+
+    _rollDice() {
+        GameManager.updateDices();
+    }
     return Card(
-         elevation: 10,
-          child: Container(
-            height: 40,
-            width: 40,
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+    shape: RoundedRectangleBorder(
+    side: BorderSide(color: Colors.white70, width: 1),
+    borderRadius: BorderRadius.circular(27),
+  ),
+      elevation: 10,
+      child: Container(
+        height: 54,
+        width: 54,
+        child: Stack(
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () => updateDices(dice),
-                    child: img,
+            CountDownTimer(true),
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: turn? () => _rollDice(): null,
+                          child: turn? img : imgg,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
